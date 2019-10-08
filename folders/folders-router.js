@@ -6,6 +6,7 @@ const FoldersService = require('./folders-service');
 const foldersRouter = express.Router();
 
 const serializeFolders = folder => ({
+  id: folder.id,
   folder_name: xss(folder.folder_name),
   date_added: folder.date_added
 });

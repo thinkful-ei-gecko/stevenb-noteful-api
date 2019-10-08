@@ -6,9 +6,11 @@ const NotesService = require('./notes-service');
 const notesRouter = express.Router();
 
 const serializeNotes = note => ({
+  id: note.id,
   note_name: xss(note.note_name),
   note_content: xss(note.note_content),
-  folder_id: note.folder_id
+  folder_id: note.folder_id,
+  date_added: note.date_modified
 });
 
 notesRouter
