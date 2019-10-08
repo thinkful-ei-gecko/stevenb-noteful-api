@@ -1,18 +1,20 @@
 {
-  "name": "express-boilerplate",
+  "name": "noteful-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "mocha --require test/setup.js",
     "start": "node src/server",
     "dev": "nodemon src/server",
+    "migrate": "postgrator --config postgrator-config.js",
+    "migrate:test": "env NODE_ENV=test npm run migrate",
     "predeploy": "npm audit --fix",
     "deploy": "git push heroku master"
   },
   "keywords": [],
   "engines": {},
-  "author": "",
+  "author": "Steven Bull <stevenwbulljr@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
