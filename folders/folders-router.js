@@ -74,7 +74,7 @@ foldersRouter
 
     if (!folder_name) {
       return res.status(400).json({
-        error: { message: 'Request body must contain a folder_name'}
+        error: { message: 'Request body must contain a \'folder_name\'.'}
       });
     }
 
