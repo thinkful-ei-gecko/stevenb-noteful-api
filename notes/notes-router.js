@@ -39,3 +39,43 @@ notesRouter
       .catch(next);
   });
 
+notesRouter
+  .route('/:id')
+  .all(( req, res, next ) => {
+    NotesService.getById(req.app.get('db'), req.params.id)
+      .then( note => {
+        if (!note) {
+          return res.status(400).json({
+            error: { message: 'Note not found.'}
+          });
+        }
+        res.note = note;
+        next();
+      })
+      .catch(next);
+  })
+  .get(( req, res ) => {
+    res.json(serializeNotes(res.note));
+  })
+  .delete(( req, res, next ) => {
+    NotesService.deleteNote(req.app.get('db'), req.params.id)
+      .then( () => res.status(204).end())
+      .catch(next);
+  })
+  .patch(( req, res, next ) => {
+    const { note_name, note_content } = req.body;
+    const newNoteFields = { note_name, note_content };
+
+    const numberOfValues = Object.values(newNoteFields).filter(Boolean).length;
+    if (numberOfValues === 0) {
+      return res.status(400).json({
+        error: { message : 'Request body must contain either \'note_name\' or \' note_content\''}
+      });
+    }
+
+    NotesService.updateNote(req.app.get('db'), req.params.id, newNoteFields)
+      .then( () => res.status(204).end())
+      .catch(next);
+  });
+
+module.exports = notesRouter;
