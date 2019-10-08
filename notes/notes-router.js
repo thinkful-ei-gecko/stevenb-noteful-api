@@ -14,7 +14,7 @@ const serializeNotes = note => ({
 notesRouter
   .route('/')
   .get(( req, res, next ) => {
-    NotesService(req.app.get('db'))
+    NotesService.getAllNotes(req.app.get('db'))
       .then( notes => res.json(notes.map(serializeNotes)))
       .catch(next);
   })
