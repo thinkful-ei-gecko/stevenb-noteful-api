@@ -39,6 +39,55 @@ foldersRouter
           .location(path.posix.join(req.originalUrl, `/${folder.id}`))
           .json(serializeFolders(folder));
       })
-      .catch(next)
+      .catch(next);
   });
 
+foldersRouter
+  .route('/:id')
+  .all(( req, res, next ) => {
+    FoldersService.getById(
+      req.app.get('db'),
+      req.params.id
+    )
+      .then( folder => {
+        if (!folder) {
+          return res.status(404).json({
+            error: { message: 'Folder not found'}
+          });
+        }
+        res.folder = folder;
+        next();
+      })
+      .catch(next);
+  })
+  .get(( req, res ) => {
+    res.json(serializeFolders(res.folder));
+  })
+  .delete(( req, res, next ) => {
+    FoldersService.deleteFolder(
+      req.app.get('db'),
+      req.params.id
+    )
+      .then( () => res.status(204).end())
+      .catch(next);
+  })
+  .patch((req, res, next ) => {
+    const { folder_name, date_added } = req.body;
+    const newFolderFields = { folder_name, date_added };
+
+    if (!folder_name) {
+      return res.status(400).json({
+        error: { message: 'Request body must contain a folder_name'}
+      });
+    }
+
+    FoldersService.updateFolder(
+      req.app.get('db'),
+      req.params.id,
+      newFolderFields
+    )
+      .then( () => res.status(204).end() )
+      .catch(next);
+  });
+
+module.exports = foldersRouter;
