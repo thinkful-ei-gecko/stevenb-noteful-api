@@ -23,8 +23,8 @@ app.get('/', ( req, res ) => {
   res.send('Hello world!');
 });
 
-app.use('/api/folder', foldersRouter);
-app.use('/api/note', notesRouter);
+app.use('/api/folders', foldersRouter);
+app.use('/api/notes', notesRouter);
 
 app.use(errorHandler);
 
