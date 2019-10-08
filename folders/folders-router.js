@@ -18,16 +18,13 @@ foldersRouter
       .catch(next);
   })
   .post(( req, res, next ) => {
-    const { folder_name, date_added } = req.body;
-    const newFolder = { folder_name, date_added };
+    const { folder_name } = req.body;
+    const newFolder = { folder_name };
 
-    for (const [key, value] in Object.entries(newFolder)) {
-      // eslint-disable-next-line eqeqeq
-      if (value == null) {
-        return res.status(400).json({
-          error: { message: `Missing ${key} in request body.` }
-        });
-      }
+    if (!folder_name) {
+      return res.status(400).json({
+        error: { message: 'Missing \'folder_name\' in request body.' }
+      });
     }
 
     FoldersService.insertFolder(
@@ -72,8 +69,8 @@ foldersRouter
       .catch(next);
   })
   .patch((req, res, next ) => {
-    const { folder_name, date_added } = req.body;
-    const newFolderFields = { folder_name, date_added };
+    const { folder_name } = req.body;
+    const newFolderFields = { folder_name };
 
     if (!folder_name) {
       return res.status(400).json({
