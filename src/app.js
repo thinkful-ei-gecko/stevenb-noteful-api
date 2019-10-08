@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const errorHandler = require('./errorHandler');
+const foldersRouter = require('../folders/folders-router');
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use(express.json());
 app.get('/', ( req, res ) => {
   res.send('Hello world!');
 });
+
+app.use('/api/folders', foldersRouter);
 
 app.use(errorHandler);
 
